@@ -25,8 +25,8 @@ router.post('/api/comment/new/:postId', (req, res, next) => __awaiter(void 0, vo
     if (!content) {
         return next(new common_1.BadRequestError('Content is required!'));
     }
-    const newComment = new Comment_1.default({
-        userName: userName ? userName : 'Anonymous',
+    const newComment = Comment_1.default.build({
+        userName,
         content,
     });
     // !Save the new comment to the database

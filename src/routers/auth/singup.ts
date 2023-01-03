@@ -14,7 +14,7 @@ router.post(
 
 		if (user) return new BadRequestError('Your email is already in use');
 
-		const newUser = new User({ email, password });
+		const newUser = User.build({ email, password });
 
 		await newUser.save();
 

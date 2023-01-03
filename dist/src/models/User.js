@@ -43,5 +43,8 @@ UserSchema.pre('save', function (done) {
         done();
     });
 });
+UserSchema.statics.build = (createUserDto) => {
+    return new User(createUserDto);
+};
 const User = mongoose_1.default.model('User', UserSchema);
 exports.default = User;

@@ -17,6 +17,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./src/services/authentication"), exports);
 __exportStar(require("./src/middlewares/current-user"), exports);
 __exportStar(require("./src/middlewares/require-auth"), exports);
+__exportStar(require("./src/middlewares/error-handler"), exports);
 __exportStar(require("./src/errors/bad-request-error"), exports);
 __exportStar(require("./src/errors/database-connection-error"), exports);
 __exportStar(require("./src/errors/not-authorized-error"), exports);

@@ -24,7 +24,7 @@ router.post('/signup', (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     const user = yield User_1.default.findOne({ email });
     if (user)
         return new common_1.BadRequestError('Your email is already in use');
-    const newUser = new User_1.default({ email, password });
+    const newUser = User_1.default.build({ email, password });
     yield newUser.save();
     req.session = {
         jwt: jsonwebtoken_1.default.sign({ email, userId: newUser._id }, process.env.JWT_KEY, { expiresIn: '10h' }),

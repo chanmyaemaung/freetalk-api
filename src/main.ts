@@ -5,7 +5,12 @@ import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import cookieSession from 'cookie-session';
-import { currentUser, requireAuth } from '../common';
+import {
+	currentUser,
+	errorHandler,
+	NotFoundError,
+	requireAuth,
+} from '../common';
 import {
 	newPostRouter,
 	deletePostRouter,
@@ -40,17 +45,6 @@ app.use(
 );
 app.use(currentUser);
 
-// !Error handling middleware
-app.use(
-	(error: CustomError, req: Request, res: Response, next: NextFunction) => {
-		if (error.status) {
-			return res.status(error.status).json({ message: error.message });
-		}
-
-		res.status(500).json({ message: 'Something went wrong!' });
-	}
-);
-
 // !Routes
 app.use(requireAuth, newPostRouter);
 app.use(requireAuth, deletePostRouter);
@@ -61,17 +55,10 @@ app.use(requireAuth, newCommentRouter);
 app.use(requireAuth, deleteCommentRouter);
 
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
-	const error = new Error('Route not found!') as CustomError;
-	error.status = 404;
-	next(error);
+	return next(new NotFoundError());
 });
 
-// !Custom Global Typescript Interfaces
-declare global {
-	interface CustomError extends Error {
-		status?: number;
-	}
-}
+app.use(errorHandler);
 
 const start = async () => {
 	if (!process.env.MONGO_URI) throw new Error('MONGO_URI must be defined!');

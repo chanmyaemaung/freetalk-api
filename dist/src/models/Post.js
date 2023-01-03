@@ -23,5 +23,8 @@ const PostSchema = new mongoose_1.default.Schema({
     timestamps: true,
     versionKey: false,
 });
+PostSchema.statics.build = (createPostDto) => {
+    return new Post(createPostDto);
+};
 const Post = mongoose_1.default.model('Post', PostSchema);
 exports.default = Post;

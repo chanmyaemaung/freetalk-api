@@ -16,5 +16,8 @@ const CommentSchema = new mongoose_1.default.Schema({
     timestamps: true,
     versionKey: false,
 });
+CommentSchema.statics.build = (createCommentDto) => {
+    return new Comment(createCommentDto);
+};
 const Comment = mongoose_1.default.model('Comment', CommentSchema);
 exports.default = Comment;

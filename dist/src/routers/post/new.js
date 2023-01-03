@@ -23,7 +23,7 @@ router.post('/api/post/new', (req, res, next) => __awaiter(void 0, void 0, void 
     if (!title || !content) {
         return next(new common_1.BadRequestError('Title and content are required!'));
     }
-    const newPost = new Post_1.default({
+    const newPost = Post_1.default.build({
         title,
         content,
     });

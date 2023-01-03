@@ -13,7 +13,7 @@ router.post(
 			return next(new BadRequestError('Title and content are required!'));
 		}
 
-		const newPost = new Post({
+		const newPost = Post.build({
 			title,
 			content,
 		});

@@ -1,4 +1,20 @@
 import mongoose from 'mongoose';
+import { CommentDoc } from './Comment';
+
+export interface PostDoc extends mongoose.Document {
+	title: string;
+	content: string;
+	comments?: Array<CommentDoc>;
+}
+
+export interface createPostDto {
+	title: string;
+	content: string;
+}
+
+export interface PostModel extends mongoose.Model<PostDoc> {
+	build(createPostDto: createPostDto): PostDoc;
+}
 
 const PostSchema = new mongoose.Schema(
 	{
@@ -23,6 +39,10 @@ const PostSchema = new mongoose.Schema(
 	}
 );
 
-const Post = mongoose.model('Post', PostSchema);
+PostSchema.statics.build = (createPostDto: createPostDto) => {
+	return new Post(createPostDto);
+};
+
+const Post = mongoose.model<PostDoc, PostModel>('Post', PostSchema);
 
 export default Post;

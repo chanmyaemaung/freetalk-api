@@ -60,13 +60,6 @@ app.use((0, cookie_session_1.default)({
     secure: false,
 }));
 app.use(common_1.currentUser);
-// !Error handling middleware
-app.use((error, req, res, next) => {
-    if (error.status) {
-        return res.status(error.status).json({ message: error.message });
-    }
-    res.status(500).json({ message: 'Something went wrong!' });
-});
 // !Routes
 app.use(common_1.requireAuth, routers_1.newPostRouter);
 app.use(common_1.requireAuth, routers_1.deletePostRouter);
@@ -75,10 +68,9 @@ app.use(routers_1.showPostRouter);
 app.use(common_1.requireAuth, routers_1.newCommentRouter);
 app.use(common_1.requireAuth, routers_1.deleteCommentRouter);
 app.all('*', (req, res, next) => {
-    const error = new Error('Route not found!');
-    error.status = 404;
-    next(error);
+    return next(new common_1.NotFoundError());
 });
+app.use(common_1.errorHandler);
 const start = () => __awaiter(void 0, void 0, void 0, function* () {
     if (!process.env.MONGO_URI)
         throw new Error('MONGO_URI must be defined!');
