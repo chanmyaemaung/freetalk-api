@@ -66,3 +66,4 @@ To delete a comment, send a DELETE request to `/api/comment/delete/:commentId`
 
 -   v0.1.0 - Initial release
 -   v0.2.0 - Implemented the user registration and custom error handling
+-   v0.2.1 - Update all the models schema with type validation.
