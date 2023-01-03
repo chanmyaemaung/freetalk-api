@@ -15,14 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deletePostRouter = void 0;
 const express_1 = require("express");
 const Post_1 = __importDefault(require("../../models/Post"));
+const common_1 = require("../../../common");
 const router = (0, express_1.Router)();
 exports.deletePostRouter = router;
 router.delete('/api/post/delete/:postId', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { postId } = req.params;
     if (!postId) {
-        const error = new Error('Post ID is required!');
-        error.status = 400;
-        return next(error);
+        return next(new common_1.BadRequestError('Post ID is required!'));
     }
     try {
         yield Post_1.default.findOneAndRemove({ _id: postId });

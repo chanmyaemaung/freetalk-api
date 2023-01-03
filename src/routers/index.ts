@@ -5,3 +5,7 @@ export * from './post/show';
 
 export * from './comment/new';
 export * from './comment/delete';
+
+export * from './auth/current-user';
+export * from './auth/singup';
+export * from './auth/signin';

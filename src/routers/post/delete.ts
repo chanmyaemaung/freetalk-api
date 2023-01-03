@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import Post from '../../models/Post';
+import { BadRequestError } from '../../../common';
 
 const router = Router();
 
@@ -9,9 +10,7 @@ router.delete(
 		const { postId } = req.params;
 
 		if (!postId) {
-			const error = new Error('Post ID is required!') as CustomError;
-			error.status = 400;
-			return next(error);
+			return next(new BadRequestError('Post ID is required!'));
 		}
 
 		try {

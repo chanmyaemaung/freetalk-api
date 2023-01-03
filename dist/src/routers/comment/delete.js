@@ -16,14 +16,13 @@ exports.deleteCommentRouter = void 0;
 const express_1 = require("express");
 const Post_1 = __importDefault(require("../../models/Post"));
 const Comment_1 = __importDefault(require("../../models/Comment"));
+const common_1 = require("../../../common");
 const router = (0, express_1.Router)();
 exports.deleteCommentRouter = router;
 router.delete('/api/comment/:commentId/delete/:postId', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { postId, commentId } = req.params;
     if (!commentId || !postId) {
-        const error = new Error('Post ID and Comment ID are required!');
-        error.status = 400;
-        return next(error);
+        return next(new common_1.BadRequestError('Comment or post not found!'));
     }
     try {
         yield Comment_1.default.findOneAndRemove({ _id: commentId });

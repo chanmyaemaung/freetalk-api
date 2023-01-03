@@ -40,19 +40,26 @@ dotenv.config();
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const cors_1 = __importDefault(require("cors"));
+const cookie_session_1 = __importDefault(require("cookie-session"));
+const common_1 = require("../common");
 const routers_1 = require("./routers");
 // !Mongoose options - to avoid deprecation warnings
 mongoose_1.default.set('strictQuery', false);
 const app = (0, express_1.default)();
-// !CORS
+const port = process.env.PORT || 8080;
+// !Middlewares
+app.set('trust proxy', true);
+app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({ extended: false })); // *To use with front-end frameworks
 app.use((0, cors_1.default)({
     origin: 'http://localhost:3000',
     optionsSuccessStatus: 200,
 }));
-const port = process.env.PORT || 8080;
-// !Middlewares
-app.use(express_1.default.json());
-app.use(express_1.default.urlencoded({ extended: false })); // *To use with front-end frameworks
+app.use((0, cookie_session_1.default)({
+    signed: false,
+    secure: false,
+}));
+app.use(common_1.currentUser);
 // !Error handling middleware
 app.use((error, req, res, next) => {
     if (error.status) {
@@ -61,18 +68,22 @@ app.use((error, req, res, next) => {
     res.status(500).json({ message: 'Something went wrong!' });
 });
 // !Routes
-app.use(routers_1.newPostRouter);
-app.use(routers_1.deletePostRouter);
-app.use(routers_1.updatePostRouter);
+app.use(common_1.requireAuth, routers_1.newPostRouter);
+app.use(common_1.requireAuth, routers_1.deletePostRouter);
+app.use(common_1.requireAuth, routers_1.updatePostRouter);
 app.use(routers_1.showPostRouter);
-app.use(routers_1.newCommentRouter);
-app.use(routers_1.deleteCommentRouter);
+app.use(common_1.requireAuth, routers_1.newCommentRouter);
+app.use(common_1.requireAuth, routers_1.deleteCommentRouter);
 app.all('*', (req, res, next) => {
     const error = new Error('Route not found!');
     error.status = 404;
     next(error);
 });
 const start = () => __awaiter(void 0, void 0, void 0, function* () {
+    if (!process.env.MONGO_URI)
+        throw new Error('MONGO_URI must be defined!');
+    if (!process.env.JWT_KEY)
+        throw new Error('JWT_KEY must be defined!');
     try {
         yield mongoose_1.default.connect(process.env.MONGO_URI, {});
     }

@@ -15,14 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.newPostRouter = void 0;
 const express_1 = require("express");
 const Post_1 = __importDefault(require("../../models/Post"));
+const common_1 = require("../../../common");
 const router = (0, express_1.Router)();
 exports.newPostRouter = router;
 router.post('/api/post/new', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, content } = req.body;
     if (!title || !content) {
-        const error = new Error('Title and content are required!');
-        error.status = 400;
-        return next(error);
+        return next(new common_1.BadRequestError('Title and content are required!'));
     }
     const newPost = new Post_1.default({
         title,

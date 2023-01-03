@@ -1,6 +1,6 @@
 {
 	"name": "freetalk",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "",
 	"main": "dist/src/main.js",
 	"scripts": {
@@ -12,11 +12,15 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"@types/cookie-session": "^2.0.44",
 		"@types/cors": "^2.8.13",
 		"@types/express": "^4.17.15",
+		"@types/jsonwebtoken": "^9.0.0",
+		"cookie-session": "^2.0.0",
 		"cors": "^2.8.5",
 		"dotenv": "^16.0.3",
 		"express": "^4.18.2",
+		"jsonwebtoken": "^9.0.0",
 		"mongoose": "^6.8.2"
 	},
 	"devDependencies": {

@@ -15,24 +15,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updatePostRouter = void 0;
 const express_1 = require("express");
 const Post_1 = __importDefault(require("../../models/Post"));
+const common_1 = require("../../../common");
 const router = (0, express_1.Router)();
 exports.updatePostRouter = router;
 router.put('/api/post/update/:postId', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { postId } = req.params;
     const { title, content } = req.body;
     if (!postId) {
-        const error = new Error('Post ID is required!');
-        error.status = 400;
-        return next(error);
+        return next(new common_1.BadRequestError('Post ID is required!'));
     }
     let updatedPost;
     try {
         updatedPost = yield Post_1.default.findByIdAndUpdate({ _id: postId }, { $set: { title, content } }, { new: true });
     }
     catch (error) {
-        const err = new Error('Post cannot be updated!');
-        err.status = 400;
-        return next(err);
+        return next(new Error('Post cannot be updated!'));
     }
     res.status(200).json({
         message: 'Post updated successfully!',
