@@ -60,8 +60,9 @@ To get a comment, send a GET request to `/api/comment/show/:commentId`
 
 To delete a comment, send a DELETE request to `/api/comment/delete/:commentId`
 
-## Version 1.0.0
+#### Version 1.0.0
 
-## Tags
+#### Tags
 
--   v1.0.0
+-   v0.1.0 - Initial release
+-   v0.2.0 - Implemented the user registration and custom error handling
