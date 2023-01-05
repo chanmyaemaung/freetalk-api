@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a RESTful API for the Free Talk Node.js Advanced course. It is a simple API that allows you to create, read, update and delete users and tokens.
+This is a RESTful API for the Free Talk Node.js Advanced course. It is a simple API that allows you to create, read, update and delete users and tokens and posts and comments with the help of the `jsonwebtoken` package.
 
 ## Installation
 
@@ -60,10 +60,11 @@ To get a comment, send a GET request to `/api/comment/show/:commentId`
 
 To delete a comment, send a DELETE request to `/api/comment/delete/:commentId`
 
-#### Version 1.0.0
+#### Version 0.3.2
 
 #### Tags
 
 -   v0.1.0 - Initial release
 -   v0.2.0 - Implemented the user registration and custom error handling
 -   v0.2.1 - Update all the models schema with type validation.
+-   v0.3.2 - Implemented image upload and image deletion with the help of the `multer` package. Also, implemented the `express-validator` package for data validation. Also, tested the API with Jest.

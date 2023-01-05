@@ -18,6 +18,8 @@ __exportStar(require("./post/new"), exports);
 __exportStar(require("./post/update"), exports);
 __exportStar(require("./post/delete"), exports);
 __exportStar(require("./post/show"), exports);
+__exportStar(require("./post/add-images"), exports);
+__exportStar(require("./post/delete-images"), exports);
 __exportStar(require("./comment/new"), exports);
 __exportStar(require("./comment/delete"), exports);
 __exportStar(require("./auth/current-user"), exports);

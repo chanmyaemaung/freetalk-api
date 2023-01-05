@@ -12,17 +12,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.newPostRouter = void 0;
+exports.addImagesRouter = void 0;
 const express_1 = require("express");
-const Post_1 = __importDefault(require("../../models/Post"));
-const User_1 = __importDefault(require("../../models/User"));
 const common_1 = require("../../../common");
+const Post_1 = __importDefault(require("../../models/Post"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const router = (0, express_1.Router)();
-exports.newPostRouter = router;
-router.post('/api/post/new', common_1.uploadImages, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, content } = req.body;
+exports.addImagesRouter = router;
+router.post('/post/:postId/add/images', common_1.uploadImages, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { postId } = req.params;
     // !Handle image upload
     if (!req.files)
         return next(new common_1.BadRequestError('No images uploaded!'));
@@ -33,27 +32,16 @@ router.post('/api/post/new', common_1.uploadImages, (req, res, next) => __awaite
     else {
         images = req.files ? [...req.files] : [];
     }
-    if (!title || !content) {
-        return next(new common_1.BadRequestError('Title and content are required!'));
-    }
-    const newPost = Post_1.default.build({
-        title,
-        content,
-        images: images.map((file) => {
-            let srcObj = {
-                src: `data:${file.mimetype};base64,${fs_1.default
-                    .readFileSync(path_1.default.join('/uploads') + file.filename)
-                    .toString('base64')}}`,
-            };
-            // !Delete the file from the uploads folder
-            fs_1.default.unlink(path_1.default.join('/uploads' + file.filename), () => { });
-            return srcObj;
-        }),
+    const imagesArray = images.map((file) => {
+        let srcObj = {
+            src: `data:${file.mimetype};base64,${fs_1.default
+                .readFileSync(path_1.default.join('/uploads') + file.filename)
+                .toString('base64')}}`,
+        };
+        // !Delete the file from the uploads folder
+        fs_1.default.unlink(path_1.default.join('/uploads' + file.filename), () => { });
+        return srcObj;
     });
-    yield newPost.save();
-    yield User_1.default.findOneAndUpdate({ _id: req.currentUser.userId }, { $push: { posts: newPost._id } });
-    res.status(201).json({
-        message: 'Post created successfully!',
-        newPost,
-    });
+    const post = yield Post_1.default.findOneAndUpdate({ _id: postId }, { $push: { images: { $each: imagesArray } } }, { new: true });
+    res.status(200).send(post);
 }));

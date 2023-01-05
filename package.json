@@ -1,29 +1,46 @@
 {
 	"name": "freetalk",
-	"version": "0.2.1",
-	"description": "",
+	"version": "0.3.2",
+	"description": "Advance Node.js and TypeScript",
 	"main": "dist/src/main.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
 		"compile": "tsc && node ./dist/src/main.js",
-		"start": "nodemon -e ts --exec \"npm run compile\""
+		"start": "nodemon -e ts --exec \"npm run compile\"",
+		"jest-cli": "jest",
+		"test": "jest --watchAll --no-cache"
+	},
+	"jest": {
+		"preset": "ts-jest",
+		"testEnvironment": "node",
+		"setupFilesAfterEnv": [
+			"./src/test/setupTests.ts"
+		]
 	},
 	"keywords": [],
-	"author": "",
+	"author": "Chen Lay <info@chanmyaemaung.net>",
 	"license": "ISC",
 	"dependencies": {
 		"@types/cookie-session": "^2.0.44",
 		"@types/cors": "^2.8.13",
 		"@types/express": "^4.17.15",
 		"@types/jsonwebtoken": "^9.0.0",
+		"@types/multer": "^1.4.7",
 		"cookie-session": "^2.0.0",
 		"cors": "^2.8.5",
 		"dotenv": "^16.0.3",
 		"express": "^4.18.2",
+		"express-validator": "^6.14.2",
 		"jsonwebtoken": "^9.0.0",
-		"mongoose": "^6.8.2"
+		"mongoose": "^6.8.2",
+		"multer": "^1.4.5-lts.1"
 	},
 	"devDependencies": {
-		"nodemon": "^2.0.20"
+		"@types/jest": "^29.2.5",
+		"@types/supertest": "^2.0.12",
+		"jest": "^29.3.1",
+		"mongodb-memory-server": "^8.10.2",
+		"nodemon": "^2.0.20",
+		"supertest": "^6.3.3",
+		"ts-jest": "^29.0.3"
 	}
 }

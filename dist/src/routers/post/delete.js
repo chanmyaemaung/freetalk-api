@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deletePostRouter = void 0;
 const express_1 = require("express");
 const Post_1 = __importDefault(require("../../models/Post"));
+const User_1 = __importDefault(require("../../models/User"));
 const common_1 = require("../../../common");
 const router = (0, express_1.Router)();
 exports.deletePostRouter = router;
@@ -29,5 +30,8 @@ router.delete('/api/post/delete/:postId', (req, res, next) => __awaiter(void 0, 
     catch (error) {
         next(new Error('Post cannot be deleted!'));
     }
-    res.status(200).json({ message: 'Post deleted successfully!' });
+    const user = yield User_1.default.findOneAndUpdate({ _id: req.currentUser.userId }, { $pull: { posts: postId } }, { new: true });
+    if (!user)
+        return next(new Error());
+    res.status(200).json({ message: 'Post deleted successfully!', user });
 }));

@@ -17,9 +17,21 @@ const express_1 = require("express");
 const common_1 = require("../../../common");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const User_1 = __importDefault(require("../../models/User"));
+const express_validator_1 = require("express-validator");
 const router = (0, express_1.Router)();
 exports.signupRouter = router;
-router.post('/signup', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.post('/signup', [
+    (0, express_validator_1.body)('email')
+        .not()
+        .isEmpty()
+        .isEmail()
+        .withMessage('Valid Email is required!'),
+    (0, express_validator_1.body)('password')
+        .not()
+        .isEmpty()
+        .isLength({ min: 6 })
+        .withMessage('Password must be at least 6 characters long!'),
+], common_1.validationRequest, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     const user = yield User_1.default.findOne({ email });
     if (user)

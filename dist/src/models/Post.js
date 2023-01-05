@@ -13,6 +13,14 @@ const PostSchema = new mongoose_1.default.Schema({
         type: String,
         require: true,
     },
+    images: [
+        {
+            src: {
+                type: String,
+                require: true,
+            },
+        },
+    ],
     comments: [
         {
             type: mongoose_1.default.Schema.Types.ObjectId,

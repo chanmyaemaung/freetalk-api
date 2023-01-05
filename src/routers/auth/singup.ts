@@ -1,12 +1,27 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { BadRequestError } from '../../../common';
+import { BadRequestError, validationRequest } from '../../../common';
 import jwt from 'jsonwebtoken';
 import User from '../../models/User';
+import { body } from 'express-validator';
 
 const router = Router();
 
 router.post(
 	'/signup',
+	[
+		body('email')
+			.not()
+			.isEmpty()
+			.isEmail()
+			.withMessage('Valid Email is required!'),
+
+		body('password')
+			.not()
+			.isEmpty()
+			.isLength({ min: 6 })
+			.withMessage('Password must be at least 6 characters long!'),
+	],
+	validationRequest,
 	async (req: Request, res: Response, next: NextFunction) => {
 		const { email, password } = req.body;
 
